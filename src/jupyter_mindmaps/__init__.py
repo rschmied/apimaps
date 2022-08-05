@@ -1,1 +1,2 @@
-__version__ = '1.0.0'
+"module docstring"
+__version__ = "2.0.0"

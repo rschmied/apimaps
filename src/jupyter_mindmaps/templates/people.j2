@@ -1,0 +1,8 @@
+## People In Space
+{%- for key, data in people.vehicle.items() %}
+### {%- if data.long %} {{ data.long }} ({{ key }}) {%- else %} {{ key }} {% endif %}
+{%- for astro in data.people %}
+#### {{ astro }}
+{%- endfor %}
+{%- endfor %}
+### Total Number: {{ people.total_number }}

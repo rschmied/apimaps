@@ -1,0 +1,7 @@
+.envrc
+.env
+.python-version
+.vscode
+dist
+__pycache__
+
