@@ -15,6 +15,7 @@ python = "^3.10"
 Jinja2 = "^3.1.2"
 rich-click = "^1.5.2"
 httpx = "^0.23.0"
+blessed = "^1.19.1"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.14.5"

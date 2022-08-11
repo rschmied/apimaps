@@ -1,9 +1,13 @@
 "module docstring"
 
 import asyncio
+import json
+from typing import Optional
 
 import httpx
+from blessed import Terminal
 from jinja2 import Environment, PackageLoader
+
 import jupyter_mindmaps.apilist as apl
 
 headers = {
@@ -11,37 +15,101 @@ headers = {
     "Content-Type": "application/json",
 }
 
+FAILURE = "  fail  "
+SUCCESS = "  done  "
+FETCH = "fetching"
+
 
 class JupyterMindMaps:
     "the space API gather and render class"
 
-    def __init__(self, token):
+    def __init__(self, token: str, not_fancy: bool):
         self.token = token
-        self.data = {}
+        self.data: dict = {}
+        self.fancy = not not_fancy
+        self.terminal: Optional[Terminal] = None
+        self.offset = 0
+        self.cursor_y = 0
 
-    async def get(self, client, api: apl.API):
+    async def get(self, idx: int, client, api: apl.API):
         "get the API via async httpx call"
 
-        print("fetching", api.description)
+        self.progress_start(FETCH, api.description)
         uri = api.uri
         if api.use_token:
             uri = uri.format(self.token)
         try:
             response = await client.get(uri)
         except Exception as exc:
-            print("oh-oh:", api.description, exc)
+            self.progress_stop(idx, FAILURE, api.description, exc)
             return
-        # response.raise_for_status()
-        self.data[api.name] = response.json()
-        print("done", api.description)
+        if response.status_code > 300:
+            reason = f"{response.status_code}: {response.reason_phrase}"
+            if len(response.text) > 0:
+                reason = f"{reason}, {response.text}"
+            self.progress_stop(
+                idx,
+                FAILURE,
+                api.description,
+                RuntimeError(reason),
+            )
+            return
+        try:
+            self.data[api.name] = response.json()
+        except json.JSONDecodeError as exc:
+            self.progress_stop(idx, FAILURE, api.description, exc)
+        else:
+            self.progress_stop(idx, SUCCESS, api.description, None)
 
-    async def gather_data(self):
+    def prep_terminal(self, api_len):
+        "prepares the terminal"
+        self.terminal = Terminal()
+        self.cursor_y, _ = self.terminal.get_location()
+        start = self.terminal.height - self.cursor_y
+        if start <= api_len:
+            self.offset = api_len - start + 1
+
+    def progress_start(self, status: str, desc: str):
+        "print a message when we start the API call"
+        term = self.terminal
+        if term is not None:
+            print(f"{term.underline_cyan}{status}{term.normal} {desc}")
+            return
+        print(f"{status} {desc}")
+
+    def progress_stop(self, idx: int, status: str, desc: str, exc: Optional[Exception]):
+        "print a message when the API call is done"
+        term = self.terminal
+        if term is not None:
+            with term.location(0, self.cursor_y + idx - self.offset):
+                if exc is None:
+                    print(term.green + status)
+                else:
+                    exc_str = type(exc).__name__
+                    if len(str(exc)) > 0:
+                        exc_str = f"{exc}, {exc_str}"
+                    print(
+                        f"{term.bold_red}{status}{term.normal} {exc_str}{term.clear_eol}"
+                    )
+            return
+
+        if exc is None:
+            print(f"{status} {desc}")
+        else:
+            print(f"{status} {desc}, {exc}")
+
+    async def gather_data(self, fast=True):
         "call all the APIs"
+
+        api_list = apl.apilist(fast=fast)
+
+        if self.fancy:
+            self.prep_terminal(len(api_list))
 
         apis = []
         async with httpx.AsyncClient() as client:
-            for api in apl.apilist(fast=True):
-                apis.append(self.get(client, api))
+            for idx, api in enumerate(api_list):
+                apis.append(self.get(idx, client, api))
             await asyncio.gather(*apis)
 
         # post processing
