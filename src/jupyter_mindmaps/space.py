@@ -39,7 +39,7 @@ class JupyterMindMaps:
         if api.use_token:
             uri = uri.format(self.token)
         try:
-            response = await client.get(uri)
+            response = await client.get(uri, headers=headers)
         except Exception as exc:
             self.progress_stop(idx, FAILURE, api.description, exc)
             return
