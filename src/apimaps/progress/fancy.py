@@ -1,6 +1,6 @@
 "A progress printing implementation"
 
-from typing import Optional
+from typing import ContextManager, Optional
 from blessed import Terminal
 from apimaps.progress.messages import FETCH, FAILURE, SUCCESS
 
@@ -25,22 +25,25 @@ class FancyProgress:
         "start with some progress message"
         print(f"{self.terminal.underline_cyan}{FETCH}{self.terminal.normal} {desc}")
 
+    def location(self, idx: int) -> ContextManager:
+        "returns the proper cursor location based on the index"
+        return self.terminal.location(0, self.cursor_y + idx - self.offset)
+
     def stop_good(self, idx: int, desc: str):
         "end the progress message (good case)"
         _ = desc
-        with self.terminal.location(0, self.cursor_y + idx - self.offset):
-            print(self.terminal.green + SUCCESS)
+        with self.location(idx):
+            print(self.terminal.green + SUCCESS + self.terminal.normal)
 
     def stop_failed(self, idx: int, desc: str, exc: Optional[Exception]):
         "end the progress message (failed case)"
-        _ = desc
-        with self.terminal.location(0, self.cursor_y + idx - self.offset):
+        with self.location(idx):
             exc_str = type(exc).__name__
             if len(str(exc)) > 0:
                 exc_str = f"{exc}, {exc_str}"
             msg = (
                 f"{self.terminal.bold_red}{FAILURE}{self.terminal.normal} "
-                f"{exc_str}{self.terminal.clear_eol}"
+                f"{desc}, {exc_str}{self.terminal.clear_eol}"
             )
             if self.terminal.length(msg) > self.terminal.width:
                 msg = self.terminal.wrap(msg)[0]
