@@ -3,7 +3,10 @@
 import asyncio
 import click
 
-from jupyter_mindmaps import space
+from apimaps import apimap
+from apimaps.progress import SimpleProgress, FancyProgress
+
+import apimaps.apilist as apl
 
 
 @click.command()
@@ -32,6 +35,12 @@ from jupyter_mindmaps import space
 )
 def run(token, filename, all_apis, not_fancy):
     "runs the code and write the markdown file"
-    jmm = space.JupyterMindMaps(token, not_fancy=not_fancy)
-    asyncio.run(jmm.gather_data(fast=not all_apis))
+
+    api_list = apl.apilist(fast=not all_apis)
+    if not_fancy:
+        progress = SimpleProgress()
+    else:
+        progress = FancyProgress(len(api_list))
+    jmm = apimap.APIMindMap(token, progress)
+    asyncio.run(jmm.gather_data(api_list))
     jmm.render_space(filename)

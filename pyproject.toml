@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "jupyter_mindmaps"
+name = "apimaps"
 version = "2.0.0"
-description = "Mindmaps of Space (massive refactor version)"
-authors = ["John Capobianco <ptcapo@gmail.com>"]
-packages = [{ include = "jupyter_mindmaps", from = "src"}]
+description = "API Maps of Space (massive refactor version)"
+authors = ["Ralph Schmieder <ralph.schmieder@gmail.com>"]
+packages = [{ include = "apimaps", from = "src"}]
 readme = "README.md"
 include = ["src/templates/*.j2"]
 
 [tool.poetry.scripts]
-jupyter_mindmaps = 'jupyter_mindmaps.cli:run'
+apimaps = "apimaps.cli:run"
 
 [tool.poetry.dependencies]
 python = "^3.10"

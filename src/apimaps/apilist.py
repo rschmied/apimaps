@@ -2,6 +2,9 @@
 
 from dataclasses import dataclass
 
+# The original list of APIs was taken from John Capobianco's
+# repository at <https://github.com/automateyournetwork/jupyter>.
+
 
 @dataclass()
 class API:
