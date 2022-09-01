@@ -1,4 +1,4 @@
-"A progress printing protocol"
+"A progress printing implementation"
 
 from typing import Optional
 from blessed import Terminal
