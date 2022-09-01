@@ -2,10 +2,6 @@
 
 from typing import Optional, Protocol
 
-FAILURE = "  fail  "
-SUCCESS = "  done  "
-FETCH = "fetching"
-
 
 class Progress(Protocol):
     "the progress base class"

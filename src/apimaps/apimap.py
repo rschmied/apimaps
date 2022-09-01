@@ -114,7 +114,7 @@ class APIMindMap:
 
         self.data["people"] = new_data
 
-    def render_space(self, filename: str):
+    def render_markdown(self, filename: str):
         "fill the template with the gathered data"
 
         # stitch all templates together and render it

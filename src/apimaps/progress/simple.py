@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from apimaps.progress.protocol import FETCH, FAILURE, SUCCESS
+from apimaps.progress.messages import FETCH, FAILURE, SUCCESS
 
 
 class SimpleProgress:

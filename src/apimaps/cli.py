@@ -41,6 +41,6 @@ def run(token, filename, all_apis, not_fancy):
         progress = SimpleProgress()
     else:
         progress = FancyProgress(len(api_list))
-    jmm = apimap.APIMindMap(token, progress)
-    asyncio.run(jmm.gather_data(api_list))
-    jmm.render_space(filename)
+    instance = apimap.APIMindMap(token, progress)
+    asyncio.run(instance.gather_data(api_list))
+    instance.render_markdown(filename)
