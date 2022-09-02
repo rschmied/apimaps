@@ -15,7 +15,7 @@
 {%-     for geo in event.geometries %}
 ###### Date: {{ geo.date }}
 ###### Type: {{ geo.type }}
-###### Coordinates: {{ geo.coordinates[0] }} / {{ geo.coordinates[1] }}
+###### Coordinates: {{ geo.coordinates[1] }}, {{ geo.coordinates[0] }}
 {%-     endfor %}
 {%- endfor %}
 {%- endfor %}
