@@ -50,4 +50,21 @@ def natural_mangle(data: dict):
     data["natural"] = new_data
 
 
-manglers = [astro_mangle, natural_mangle]
+def epic_mangle(data: dict):
+    "create a proper image link, based on https://epic.gsfc.nasa.gov/about/api"
+
+    if data.get("epic") is None:
+        return
+
+    for image in data["epic"]:
+        year = image["identifier"][:4]
+        month = image["identifier"][4:6]
+        day = image["identifier"][6:8]
+
+        image["url"] = (
+            f"https://epic.gsfc.nasa.gov/archive/natural/"
+            f"{year}/{month}/{day}/png/{image['image']}.png"
+        )
+
+
+manglers = [astro_mangle, epic_mangle, natural_mangle]

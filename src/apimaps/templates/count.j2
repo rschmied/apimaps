@@ -1,0 +1,6 @@
+## Known Celestial Body Count
+{%- for elem in count["knowncount"] %}
+### {{ elem.id }}
+#### Known Count: {{ elem.knownCount }}
+#### Last Updated: {{ elem.updateDate }}
+{%- endfor %}

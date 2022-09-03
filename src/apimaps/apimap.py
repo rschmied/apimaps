@@ -2,7 +2,7 @@
 
 import asyncio
 import json
-from typing import List
+from typing import List, Optional
 
 import httpx
 from jinja2 import Environment, PackageLoader
@@ -23,14 +23,13 @@ class APIMindMap:
         self.token = token
         self.data: dict = {}
         self.progress = progress
+        self.last_headers: Optional[httpx.Headers] = None
 
     async def get(self, idx: int, client: httpx.AsyncClient, api: apl.API):
         "get the API via async httpx call"
 
         self.progress.start(api.description)
-        uri = api.uri
-        if api.use_token:
-            uri = uri.format(self.token)
+        uri = api.uri.format(self.token) if api.use_token else api.uri
         try:
             response = await client.get(uri, headers=headers)
         except Exception as exc:
@@ -46,6 +45,7 @@ class APIMindMap:
                 RuntimeError(reason),
             )
             return
+        self.last_headers = response.headers
         try:
             self.data[api.name] = response.json()
         except json.JSONDecodeError as exc:
@@ -58,7 +58,8 @@ class APIMindMap:
 
         self.progress.initialize()
         api_list = []
-        async with httpx.AsyncClient() as client:
+        timeout = httpx.Timeout(10.0)
+        async with httpx.AsyncClient(timeout=timeout) as client:
             for idx, api in enumerate(apis):
                 api_list.append(self.get(idx, client, api))
             await asyncio.gather(*api_list)

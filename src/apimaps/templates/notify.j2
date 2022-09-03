@@ -1,6 +1,6 @@
-{%- if notifications %}
+{%- if notify %}
 ## Notifications
-{%- for notification in notifications %}
+{%- for notification in notify %}
 ### {{ notification.messageID }}
 #### Message Type: {{ notification.messageType }}
 #### [Message_URL]({{ notification.messageURL }})

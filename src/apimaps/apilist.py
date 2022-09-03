@@ -16,7 +16,7 @@ class API:
 
 
 # NOTE: APIs which are commented out might need work in the template
-def apilist(fast: bool = True) -> list[API]:
+def apilist(all_apis: bool = True) -> list[API]:
     "returns the list of defined APIs"
     apl = [
         API("iss", "http://api.open-notify.org/iss-now.json", "ISS Location", False),
@@ -24,7 +24,7 @@ def apilist(fast: bool = True) -> list[API]:
             "people", "http://api.open-notify.org/astros.json", "People in Space", False
         ),
     ]
-    if fast:
+    if not all_apis:
         return apl
 
     apl.extend(
@@ -49,34 +49,37 @@ def apilist(fast: bool = True) -> list[API]:
                 "https://api.nasa.gov/neo/rest/v1/feed?api_key={}",
                 "Asteroids Near Earth Objects",
             ),
-            # API(
-            #     "gst",
-            #     "https://api.nasa.gov/DONKI/GST?startDate=2021-01-01&api_key={}",
-            #     "Geomagetic Storms",
-            # ),
-            # API("ips", "https://api.nasa.gov/DONKI/IPS?api_key={}", "Interplanetary Shock"),
-            # API("flr", "https://api.nasa.gov/DONKI/FLR?api_key={}", "Solar Flare"),
-            # API(
-            #     "sep",
-            #     "https://api.nasa.gov/DONKI/SEP?startDate=2021-01-01&api_key={}",
-            #     "Solar Energetic Particle",
-            # ),
-            # API(
-            #     "mpc", "https://api.nasa.gov/DONKI/MPC?api_key={}", "Magnetopause Crossing"
-            # ),
-            # API(
-            #     "rbe",
-            #     "https://api.nasa.gov/DONKI/RBE?api_key={}",
-            #     "Radiation Belt Enhancement",
-            # ),
-            # API("hss", "https://api.nasa.gov/DONKI/HSS?api_key={}", "High Speed Streams"),
-            # API(
-            #     "wsa",
-            #     "https://api.nasa.gov/DONKI/WSAEnlilSimulations?api_key={}",
-            #     "WSA+EnlilSimulation",
-            # ),
             API(
-                "notification",
+                "gst",
+                "https://api.nasa.gov/DONKI/GST?&api_key={}",
+                "Geomagetic Storms",
+            ),
+            API(
+                "ips",
+                "https://api.nasa.gov/DONKI/IPS?api_key={}",
+                "Interplanetary Shock",
+            ),
+            API("flr", "https://api.nasa.gov/DONKI/FLR?api_key={}", "Solar Flare"),
+            API(
+                "sep",
+                "https://api.nasa.gov/DONKI/SEP?api_key={}",
+                "Solar Energetic Particle",
+            ),
+            API(
+                "mpc",
+                "https://api.nasa.gov/DONKI/MPC?api_key={}",
+                "Magnetopause Crossing",
+            ),
+            API(
+                "rbe",
+                "https://api.nasa.gov/DONKI/RBE?api_key={}",
+                "Radiation Belt Enhancement",
+            ),
+            API(
+                "hss", "https://api.nasa.gov/DONKI/HSS?api_key={}", "High Speed Streams"
+            ),
+            API(
+                "notify",
                 "https://api.nasa.gov/DONKI/notifications?api_key={}",
                 "Notifications",
             ),
@@ -86,13 +89,13 @@ def apilist(fast: bool = True) -> list[API]:
                 "Natural Events",
                 False,
             ),
-            # API(
-            #     "epicNat",
-            #     "https://api.nasa.gov/EPIC/api/natural?api_key={}",
-            #     "Earth Polychromatic Imaging Camera",
-            # ),
             API(
-                "knowncount",
+                "epic",
+                "https://api.nasa.gov/EPIC/api/natural?api_key={}",
+                "Earth Polychromatic Imaging Camera",
+            ),
+            API(
+                "count",
                 "https://api.le-systeme-solaire.net/rest/knowncount/",
                 "Known Celestial Body Count",
                 False,
@@ -103,11 +106,19 @@ def apilist(fast: bool = True) -> list[API]:
                 "Planets",
                 False,
             ),
-            # API(
-            #     "wsa",
-            #     "https://api.nasa.gov/DONKI/WSAEnlilSimulations?api_key={}",
-            #     "WSA+EnlilSimulation",
-            # ),
+            API(
+                "wsa",
+                "https://api.nasa.gov/DONKI/WSAEnlilSimulations?api_key={}",
+                "WSA+EnlilSimulation",
+            ),
         ]
     )
     return apl
+
+
+def print_apis(apis: list[API]) -> list[str]:
+    "return a list of the provided API list"
+    out = []
+    for api in apis:
+        out.append(f"{api.name}\t{api.description}")
+    return out
