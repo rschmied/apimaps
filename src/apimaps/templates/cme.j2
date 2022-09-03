@@ -8,11 +8,11 @@
 #### [Link]({{ ejection.link }})
 #### Note: {{ ejection.note }}
 #### Instruments
-{%-     for instrument in ejection.instruments %}
+{%- for instrument in ejection.instruments %}
 ##### {{ instrument.displayName }}
-{%-     endfor %}
+{%- endfor %}
 #### Analysis
-{%-     for item in ejection.cmeAnalyses %}
+{%- for item in ejection.cmeAnalyses %}
 ##### Time: {{ item.time21_5 }}
 ##### Latitude: {{ item.latitude }}
 ##### Longitude: {{ item.longitude }}
@@ -23,5 +23,5 @@
 ##### Level of Data: {{ item.levelOfData }}
 ##### [Link]({{ item.link }})
 ##### Note: {{ item.note }}
-{%-     endfor %}
+{%- endfor %}
 {%- endfor %}

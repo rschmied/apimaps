@@ -1,0 +1,68 @@
+{%- macro render_body(body) -%}
+- Names
+  - French: {{ body.name }}
+  - Alternative: {{ body.alternativeName }}
+- Semi Major Axis: {{ body.semimajorAxis }}
+- Perihelion: {{ body.perihelion }}
+- Aphelion: {{ body.aphelion }}
+- Eccentricity: {{ body.eccentricity }}
+- Inclination: {{ body.inclination }}
+{%- if body.mass %}
+- Mass
+  - Value: {{ body.mass.massValue }}
+  - Exponent: {{ body.mass.massExponent }}
+{%- endif %}
+{%- if body.mass %}
+- Volume
+  - Value: {{ body.vol.volValue }}
+  - Exponent: {{ body.vol.volExponent }}
+{%- endif %}
+- Density: {{ body.density }}
+- Gravity: {{ body.escape }}
+- Radius
+  - Mean: {{ body.meanRadius }}
+  - Equator: {{ body.equaRadius }}
+  - Polar: {{ body.polarRadius }}
+- Flattening: {{ body.flattening }}
+- Dimension: {{ body.dimension }}
+- Sideral
+  - Orbit: {{ body.sideralOrbit }}
+  - Rotation: {{ body.sideralRotation }}
+{%- if body.aroundPlanet %}
+- Around Planet: [{{ body.aroundPlanet.planet }}]({{ body.aroundPlanet.rel }})
+{%- endif %}
+- Discovered
+  - By: {{ body.discoveredBy }}
+  - Date: {{ body.discoveryDate }}
+- Axial Tilt: {{ body.axialTilt }}
+- Average Temperature: {{ body.avgTemp }}
+- Main Anomaly: {{ body.mainAnomaly }}
+- Periapsis: {{ body.argPeriapsis }}
+- Long Asc Node: {{ body.longAscNode }}
+{%- if body.moons %}
+- Moons
+{%- for moon in body.moons %}
+  - [{{ moon.moon }}]({{ moon.rel }})
+{%- endfor %}
+{%- endif %}
+{%- endmacro %}
+{# ************ START HERE ************ #}
+## Celestial Bodies
+### Total Count: {{ bodies.total_count }}
+{%- for id, category in bodies.categories.items() %}
+### {{ id }}
+{%- if id == "Moon" %}
+{%- for id, planet in category.items() %}
+#### {{ id }}
+{%- for moon in planet %}
+##### {{ moon.englishName }}
+{{ render_body(moon) }}
+{%- endfor %}
+{%- endfor %}
+{%- else %}
+{%- for body in category %}
+#### {{ body.englishName }}
+{{ render_body(body) }}
+{%- endfor %}
+{%- endif %}
+{%- endfor %}

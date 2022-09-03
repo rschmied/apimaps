@@ -14,7 +14,6 @@ import apimaps.apilist as apl
 @click.option(
     "--token",
     help="NASA Token",
-    required=True,
     envvar="TOKEN",
 )
 @click.option(
@@ -58,6 +57,7 @@ def run(token, filename, all_apis, simple, list_apis, api):
     A valid token is DEMO_KEY, it has some usage restrictions (30 uses per day).
     """
 
+    # list all APIs, if requested
     if list_apis:
         print("\n".join(apl.print_apis(apl.apilist())))
         return
@@ -73,19 +73,24 @@ def run(token, filename, all_apis, simple, list_apis, api):
     else:
         api_list = apl.apilist(all_apis)
 
-    # 2. provide a progress printing instance
+    # 2. check if we need a token to continue
+    if token is None and any(api for api in api_list if api.use_token):
+        print("API token is missing but required!  Use --help for help.")
+        return
+
+    # 3. provide a progress printing instance
     progress = SimpleProgress() if simple else FancyProgress(len(api_list))
-    # 3. create an instance of the API fetcher/renderer
+    # 4. create an instance of the API fetcher/renderer
     instance = apimap.APIMindMap(token, progress)
-    # 4. fetch all the data
+    # 5. fetch all the data
     asyncio.run(instance.gather_data(api_list))
-    # 5. post-process the data
+    # 6. post-process the data
     for mangler in manglers:
         mangler(instance.data)
-    # 6. render the markdown file from the data
+    # 7. render the markdown file from the data
     instance.render_markdown(filename)
 
-    # 7. print rate limit information
+    # 8. print rate limit information
     if instance.last_headers:
         limit = instance.last_headers.get("x-ratelimit-limit", 0)
         remaining = instance.last_headers.get("x-ratelimit-remaining", 0)

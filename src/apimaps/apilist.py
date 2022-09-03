@@ -52,7 +52,7 @@ def apilist(all_apis: bool = True) -> list[API]:
             API(
                 "gst",
                 "https://api.nasa.gov/DONKI/GST?&api_key={}",
-                "Geomagetic Storms",
+                "Geomagnetic Storms",
             ),
             API(
                 "ips",
@@ -101,9 +101,9 @@ def apilist(all_apis: bool = True) -> list[API]:
                 False,
             ),
             API(
-                "planets",
-                "https://api.le-systeme-solaire.net/rest/bodies?filter=isPlanet,eq,true",
-                "Planets",
+                "bodies",
+                "https://api.le-systeme-solaire.net/rest/bodies",
+                "Bodies",
                 False,
             ),
             API(
@@ -118,7 +118,8 @@ def apilist(all_apis: bool = True) -> list[API]:
 
 def print_apis(apis: list[API]) -> list[str]:
     "return a list of the provided API list"
-    out = []
+    out = ["API\tToken\tDescription", "-" * 40]
     for api in apis:
-        out.append(f"{api.name}\t{api.description}")
+        token = "+" if api.use_token else ""
+        out.append(f"{api.name}\t{token}\t{api.description}")
     return out

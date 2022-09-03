@@ -5,17 +5,21 @@
 #### {{ event.id }}
 ##### Title: {{ event.title }}
 ##### Description: {{ event.description }}
-##### [Link]({{ event.link }})
+{# ##### [Link]({{ event.link }}) #}
+{%- if event.geometries %}
+{# last geometry point is newest #}
+##### [Google Maps](https://www.google.com/maps/place/@{{ event.geometries[-1].coordinates[1] }},{{ event.geometries[-1].coordinates[0] }},16z)
+{%- endif %}
 ##### Sources
-{%-     for source in event.sources %}
+{%- for source in event.sources %}
 ###### ID: {{ source.id }}
 ###### [Link]({{ source.url }})
-{%-     endfor %}
+{%- endfor %}
 ##### Geometries
-{%-     for geo in event.geometries %}
+{%- for geo in event.geometries %}
 ###### Date: {{ geo.date }}
 ###### Type: {{ geo.type }}
 ###### Coordinates: {{ geo.coordinates[1] }}, {{ geo.coordinates[0] }}
-{%-     endfor %}
+{%- endfor %}
 {%- endfor %}
 {%- endfor %}

@@ -50,6 +50,44 @@ def natural_mangle(data: dict):
     data["natural"] = new_data
 
 
+def bodies_mangle(data: dict):
+    "re-organize the bodies data and put them into categories"
+
+    if data.get("bodies") is None:
+        return
+
+    bodies = {body["id"]: body for body in data["bodies"]["bodies"]}
+
+    categories: dict = {}
+    for body in bodies.values():
+        body_type = body.pop("bodyType")
+
+        # moons go into a planet category (dict), everything else is a list
+        if categories.get(body_type) is None:
+            categories[body_type] = {} if body_type == "Moon" else []
+
+        # if this body has moons... fix the name (it's French!)
+        if body["moons"]:
+            for moon in body["moons"]:
+                # the last part of the relation URL has the ID of the
+                # planet to look up the body.
+                moon_id = moon["rel"].split("/")[-1]
+                moon["moon"] = bodies[moon_id]["englishName"]
+
+        # put all moons into an additionl planet hierarchy
+        if body_type == "Moon":
+            around = body["aroundPlanet"]["planet"]
+            planet_name = bodies[around]["englishName"]
+            # use the English name, not the French one
+            body["aroundPlanet"]["planet"] = planet_name
+            if categories[body_type].get(planet_name) is None:
+                categories[body_type][planet_name] = []
+            categories[body_type][planet_name].append(body)
+        else:
+            categories[body_type].append(body)
+    data["bodies"] = {"categories": categories, "total_count": len(bodies)}
+
+
 def epic_mangle(data: dict):
     "create a proper image link, based on https://epic.gsfc.nasa.gov/about/api"
 
@@ -67,4 +105,4 @@ def epic_mangle(data: dict):
         )
 
 
-manglers = [astro_mangle, epic_mangle, natural_mangle]
+manglers = [astro_mangle, bodies_mangle, epic_mangle, natural_mangle]
