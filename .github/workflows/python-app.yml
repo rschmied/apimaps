@@ -35,9 +35,9 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest
         run: |
-          PYTHONPATH=src pytest --cov=src --cov-report=xml
+          PYTHONPATH=src coveralls run -m pytest tests
+          coveralls lcov
       - name: Code Coverage
-        uses: orgoro/coverage@v2
+        uses: coverallsapp/github-action@master
         with:
-            coverageFile: coverage.xml
-            token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: coverallsapp/github-action@master
