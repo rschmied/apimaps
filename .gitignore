@@ -6,5 +6,6 @@ dist
 __pycache__
 .coverage
 coverage.xml
+coverage.lcov
 .mypy_cache
 .pytest_cache
