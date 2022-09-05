@@ -1,4 +1,4 @@
-![Status](https://github.com/rschmied/apimaps/actions/workflows/python_app.yml/badge.svg)
+[![CI](https://github.com/rschmied/apimaps/actions/workflows/python-app.yml/badge.svg)](https://github.com/rschmied/apimaps/actions/workflows/python-app.yml) [![Coverage Status](https://coveralls.io/repos/github/rschmied/apimaps/badge.svg?branch=main)](https://coveralls.io/github/rschmied/apimaps?branch=main)
 
 # Create Mindmaps from API Output
 
