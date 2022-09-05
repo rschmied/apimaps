@@ -1,3 +1,5 @@
+![Status](https://github.com/rschmied/apimaps/actions/workflows/python_app.yml/badge.svg)
+
 # Create Mindmaps from API Output
 
 > **Note**: this project was originally published by John Capobianco
