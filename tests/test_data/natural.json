@@ -1,0 +1,101 @@
+{
+	"natural": {
+		"title": "EONET Events",
+		"description": "Natural events from EONET.",
+		"link": "https://eonet.gsfc.nasa.gov/api/v2.1/events",
+		"events": [
+			{
+				"id": "EONET_6203",
+				"title": "Tropical Storm Javier",
+				"description": "",
+				"link": "https://eonet.gsfc.nasa.gov/api/v2.1/events/EONET_6203",
+				"categories": [
+					{
+						"id": 10,
+						"title": "Severe Storms"
+					}
+				],
+				"sources": [
+					{
+						"id": "GDACS",
+						"url": "https://www.gdacs.org/report.aspx?eventid=1000910&amp;episodeid=3&amp;eventtype=TC"
+					},
+					{
+						"id": "JTWC",
+						"url": "https://www.metoc.navy.mil/jtwc/products/ep1122.tcw"
+					},
+					{
+						"id": "NOAA_NHC",
+						"url": "https://www.nhc.noaa.gov/archive/2022/JAVIER.shtml"
+					}
+				],
+				"geometries": [
+					{
+						"date": "2022-09-02T06:00:00Z",
+						"type": "Point",
+						"coordinates": [
+							-111.4,
+							19.5
+						]
+					},
+					{
+						"date": "2022-09-02T12:00:00Z",
+						"type": "Point",
+						"coordinates": [
+							-111.9,
+							20.2
+						]
+					},
+					{
+						"date": "2022-09-02T18:00:00Z",
+						"type": "Point",
+						"coordinates": [
+							-112.5,
+							21.3
+						]
+					},
+					{
+						"date": "2022-09-03T00:00:00Z",
+						"type": "Point",
+						"coordinates": [
+							-112.8,
+							22.6
+						]
+					},
+					{
+						"date": "2022-09-03T06:00:00Z",
+						"type": "Point",
+						"coordinates": [
+							-113.6,
+							23.5
+						]
+					},
+					{
+						"date": "2022-09-03T12:00:00Z",
+						"type": "Point",
+						"coordinates": [
+							-114.3,
+							24.7
+						]
+					},
+					{
+						"date": "2022-09-03T18:00:00Z",
+						"type": "Point",
+						"coordinates": [
+							-115.5,
+							25.7
+						]
+					},
+					{
+						"date": "2022-09-04T00:00:00Z",
+						"type": "Point",
+						"coordinates": [
+							-116.6,
+							26.4
+						]
+					}
+				]
+			}
+		]
+	}
+}

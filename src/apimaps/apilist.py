@@ -15,7 +15,6 @@ class API:
     use_token: bool = True
 
 
-# NOTE: APIs which are commented out might need work in the template
 def apilist(all_apis: bool = True) -> list[API]:
     "returns the list of defined APIs"
     apl = [
@@ -116,8 +115,14 @@ def apilist(all_apis: bool = True) -> list[API]:
     return apl
 
 
-def print_apis(apis: list[API]) -> list[str]:
-    "return a list of the provided API list"
+def single_api(api: str) -> list[API]:
+    "return the list with the single API that matches the provided one"
+    complete = apilist()
+    return [a for a in complete if a.name == api]
+
+
+def printable(apis: list[API]) -> list[str]:
+    "returns a printable version of the provided API list"
     out = ["API\tToken\tDescription", "-" * 40]
     for api in apis:
         token = "+" if api.use_token else ""

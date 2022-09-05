@@ -15,7 +15,7 @@ class FancyProgress:
         self.api_len = api_len
 
     def initialize(self):
-        "initialize a progress object, nothing to do here"
+        "initialize a progress object"
         self.cursor_y, _ = self.terminal.get_location()
         start = self.terminal.height - self.cursor_y
         if start <= self.api_len:

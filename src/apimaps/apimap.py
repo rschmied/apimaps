@@ -32,7 +32,7 @@ class APIMindMap:
         uri = api.uri.format(self.token) if api.use_token else api.uri
         try:
             response = await client.get(uri, headers=headers)
-        except Exception as exc:
+        except Exception as exc:  # pylint: disable=W
             self.progress.stop_failed(idx, api.description, exc)
             return
         if response.status_code >= 300:

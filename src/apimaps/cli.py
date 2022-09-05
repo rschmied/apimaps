@@ -1,6 +1,7 @@
 "module docstring"
 
 import asyncio
+import sys
 import click
 
 from apimaps import apimap
@@ -59,24 +60,23 @@ def run(token, filename, all_apis, simple, list_apis, api):
 
     # list all APIs, if requested
     if list_apis:
-        print("\n".join(apl.print_apis(apl.apilist())))
+        print("\n".join(apl.printable(apl.apilist())))
         return
 
     # 1. prepare the API list
     if api is not None:
-        complete = apl.apilist()
-        api_list = [a for a in complete if a.name == api]
+        api_list = apl.single_api(api)
         if len(api_list) != 1:
             print(f"Unknown API '{api}', known APIs are:")
-            print("\n".join(apl.print_apis(complete)))
-            return
+            print("\n".join(apl.printable(apl.apilist())))
+            sys.exit(1)
     else:
         api_list = apl.apilist(all_apis)
 
     # 2. check if we need a token to continue
     if token is None and any(api for api in api_list if api.use_token):
         print("API token is missing but required!  Use --help for help.")
-        return
+        sys.exit(1)
 
     # 3. provide a progress printing instance
     progress = SimpleProgress() if simple else FancyProgress(len(api_list))
@@ -95,3 +95,4 @@ def run(token, filename, all_apis, simple, list_apis, api):
         limit = instance.last_headers.get("x-ratelimit-limit", 0)
         remaining = instance.last_headers.get("x-ratelimit-remaining", 0)
         print(f"Rate limit: {remaining}/{limit}")
+    sys.exit(0)

@@ -4,4 +4,7 @@
 .vscode
 dist
 __pycache__
-
+.coverage
+coverage.xml
+.mypy_cache
+.pytest_cache
