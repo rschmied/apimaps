@@ -27,10 +27,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest
           if [ -f tests/requirements.txt ]; then pip install -r tests/requirements.txt; fi
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
@@ -39,4 +35,8 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest
         run: |
-          pytest
+          pytest --cov=src --cov-report=xml
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
