@@ -23,12 +23,6 @@ import apimaps.apilist as apl
     default="space.md",
 )
 @click.option(
-    "--all-apis",
-    is_flag=True,
-    help="use all APIs, otherwise only use the fast ones",
-    default=False,
-)
-@click.option(
     "--simple",
     is_flag=True,
     help="use simple progress output",
@@ -42,9 +36,12 @@ import apimaps.apilist as apl
 )
 @click.argument(
     "api",
+    nargs=-1,
+    type=str,
     required=False,
 )
-def run(token, filename, all_apis, simple, list_apis, api):
+@click.version_option()
+def run(token, filename, simple, list_apis, api):
     """
     Fetch the built-in APIs and render it to markdown.  It is then written into
     the file "space.md" (can be changed via the --filename argument).  By
@@ -58,20 +55,21 @@ def run(token, filename, all_apis, simple, list_apis, api):
     A valid token is DEMO_KEY, it has some usage restrictions (30 uses per day).
     """
 
-    # list all APIs, if requested
+    # 0. list all APIs, if requested
     if list_apis:
         print("\n".join(apl.printable(apl.apilist())))
-        return
+        sys.exit(0)
 
     # 1. prepare the API list
-    if api is not None:
-        api_list = apl.single_api(api)
-        if len(api_list) != 1:
-            print(f"Unknown API '{api}', known APIs are:")
+    if len(api) >= 1:
+        try:
+            api_list = apl.get_api_set(set(api))
+        except ValueError as exc:
+            print(f"Error: {exc}\n\nValid ones are:\n")
             print("\n".join(apl.printable(apl.apilist())))
             sys.exit(1)
     else:
-        api_list = apl.apilist(all_apis)
+        api_list = apl.apilist()
 
     # 2. check if we need a token to continue
     if token is None and any(api for api in api_list if api.use_token):

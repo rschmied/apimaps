@@ -1,5 +1,6 @@
 "tests for the api list class / module"
 
+import pytest
 import apimaps.apilist as apl
 
 
@@ -13,14 +14,7 @@ def test_api_class():
     assert api.use_token is True
 
 
-def test_api_short():
-    "test the short / fast API list"
-
-    alist = apl.apilist(all_apis=False)
-    assert len(alist) == 2
-
-
-def test_api_long():
+def test_all_apis():
     "test the long API list"
 
     alist = apl.apilist()
@@ -30,15 +24,19 @@ def test_api_long():
 def test_api_output():
     "test API output / help creation"
 
-    alist = apl.apilist(all_apis=False)
+    alist = apl.apilist()
     output = apl.printable(alist)
     assert len(output) == len(alist) + 2
 
 
-def test_single():
+def test_api_set():
     "test single API retrieval"
 
-    alist = apl.single_api("people")
+    alist = apl.get_api_set({"people"})
     assert len(alist) == 1
-    alist = apl.single_api("does-not-exist")
-    assert len(alist) == 0
+
+    alist = apl.get_api_set({"iss", "people"})
+    assert len(alist) == 2
+
+    with pytest.raises(ValueError):
+        alist = apl.get_api_set({"does-not-exist"})

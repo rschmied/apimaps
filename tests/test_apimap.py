@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, patch, Mock
 from httpx import Response
 
 from apimaps.apimap import APIMindMap
-from apimaps.apilist import single_api
+from apimaps.apilist import get_api_set
 from apimaps.post_process import astro_mangle
 
 
@@ -23,7 +23,7 @@ def test_apimap_gather(mock_httpx, test_data):
     # good path
     mock_progress = Mock()
     apimap = APIMindMap("sometoken", mock_progress)
-    api_list = single_api("people")
+    api_list = get_api_set({"people"})
     asyncio.run(apimap.gather_data(api_list))
     mock_progress.stop_good.assert_called_once_with(0, "People in Space")
 

@@ -1,2 +1,1 @@
-"module docstring"
-__version__ = "2.0.0"
+"apimaps module initialization"
