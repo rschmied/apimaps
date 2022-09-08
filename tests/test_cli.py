@@ -12,12 +12,15 @@ from apimaps.cli import run
 def test_cli_method(mock_apimap):
     "cli function test"
 
+    if os.environ.get("TOKEN") is None:
+        os.environ["TOKEN"] = "some token"
+
     instance = mock_apimap.return_value
     instance.data = {}
     instance.gather_data = AsyncMock(return_value={})
     runner = CliRunner()
 
-    # basic invocation -- no specific args
+    # basic invocation -- no specific args, token provided via env
     result = runner.invoke(run)
     assert result.exit_code == 0
 
