@@ -136,17 +136,6 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, 
 graph = ["objgraph (>=1.7.2)"]
 
 [[package]]
-name = "dunamai"
-version = "1.13.0"
-description = "Dynamic version generation"
-category = "dev"
-optional = false
-python-versions = ">=3.5,<4.0"
-
-[package.dependencies]
-packaging = ">=20.9"
-
-[[package]]
 name = "flake8"
 version = "5.0.4"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -517,7 +506,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "a030ac9aaaa8eb121e1697e537a6878dea5ada8538b3940fdf9ff24ddbc2e3d2"
+content-hash = "4a9df52c224faba6c80a27d17fd7ba6723c00cdd04c3a910ce08a2f4315d5060"
 
 [metadata.files]
 ansicon = [
@@ -632,10 +621,6 @@ coverage = [
 dill = [
     {file = "dill-0.3.5.1-py2.py3-none-any.whl", hash = "sha256:33501d03270bbe410c72639b350e941882a8b0fd55357580fbc873fba0c59302"},
     {file = "dill-0.3.5.1.tar.gz", hash = "sha256:d75e41f3eff1eee599d738e76ba8f4ad98ea229db8b085318aa2b3333a208c86"},
-]
-dunamai = [
-    {file = "dunamai-1.13.0-py3-none-any.whl", hash = "sha256:9bc19b8c53c62f922f2835e210f2295089669ab18222601cef44eb8c3a51929e"},
-    {file = "dunamai-1.13.0.tar.gz", hash = "sha256:5bf9e5baaa673b692a9613e4961b18b6d2d9743412f7bbcf4a39c84a979f47e2"},
 ]
 flake8 = [
     {file = "flake8-5.0.4-py2.py3-none-any.whl", hash = "sha256:7a1cf6b73744f5806ab95e526f6f0d8c01c66d7bbe349562d22dfca20610b248"},

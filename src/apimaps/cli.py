@@ -61,7 +61,7 @@ def run(token, filename, simple, list_apis, api):
         sys.exit(0)
 
     # 1. prepare the API list
-    if len(api) >= 1:
+    if len(api) > 0:
         try:
             api_list = apl.get_api_set(set(api))
         except ValueError as exc:

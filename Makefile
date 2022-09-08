@@ -1,6 +1,4 @@
-.PHONY: clean help requirements tests
-
-# VERSION := $(shell dunamai from any)
+.PHONY: clean devinstall export help tests
 
 clean:  ## clean up the directory
 	rm -rf .mypy_cache .pytest_cache
@@ -14,15 +12,13 @@ tests:  ## run all unit tests
 devinstall:  ## install all dev and test dependency
 	poetry install --with dev,test
 
-requirements:  ## update the requirements.txt file
-	poetry export --with test --format=requirements.txt --output=tests/requirements.txt
-
-# version:  ## set the version to latest git tag
-# 	echo "__version__ = \"${VERSION}\"" > src/apimaps/_version.py
+export:  ## update the requirements.txt file
+	poetry export --with test  \
+		--format=requirements.txt \
+		--output=tests/requirements.txt \
+		--without-hashes 
 
 build:
-	@VERSION=$$(dunamai from any) && \
-	poetry version $$VERSION && \
 	poetry build
 
 help: ## Show help text
