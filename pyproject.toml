@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "apimaps"
-version = "0.0.0"
+version = "2.0.2"
 description = "API Maps of Space (massive refactor version)"
 authors = ["Ralph Schmieder <ralph.schmieder@gmail.com>"]
 packages = [{ include = "apimaps", from = "src"}]

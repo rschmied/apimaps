@@ -1,9 +1,13 @@
-.PHONY: clean devinstall export help tests
+.PHONY: clean devinstall distclean export help tests
 
 clean:  ## clean up the directory
 	rm -rf .mypy_cache .pytest_cache
 	rm -f .coverage coverage.xml coverage.lcov
 	rm -rf dist
+	find src -depth -name __pycache__ -exec rm -rf {} \;
+
+distclean: clean;  ## clean and also remove the venv
+	rm -rf .venv
 
 tests:  ## run all unit tests
 	coverage run -m pytest tests
